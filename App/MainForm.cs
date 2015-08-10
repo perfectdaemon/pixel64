@@ -1,33 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace SharpPixel
 {
     public partial class MainForm : Form
     {
-        private GameMenu menu;
-
-        public MainForm()
-        {
-            InitializeComponent();
-        }
+        private Controller controller = new Controller();
+        private double dt;
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             ClientSize = Utility.WindowSize;
-            menu = new GameMenu(this.renderSurface);
-            menu.LoadResources();
-            menu.RenderSelf();
         }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
-            menu.HandleKeys(e);
+            Utility.KeyDown[e.KeyCode] = true;
+            controller.HandleKeys(e);            
+        }
+
+        private void mainTimer_Tick(object sender, EventArgs e)
+        {
+            controller.Update(dt);
         }
 
         protected override bool IsInputKey(Keys keyData)
@@ -46,7 +40,18 @@ namespace SharpPixel
                     return true;
             }
             return base.IsInputKey(keyData);
-        }              
-         
+        }        
+
+        public MainForm()
+        {
+            InitializeComponent();
+            controller.Initialize(this.renderSurface);
+            dt = mainTimer.Interval / 1000d;
+        }
+
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            Utility.KeyDown[e.KeyCode] = false;
+        }                              
     }   
 }

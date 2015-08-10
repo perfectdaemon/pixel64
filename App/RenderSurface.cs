@@ -9,16 +9,6 @@ using System.Drawing.Drawing2D;
 
 namespace SharpPixel
 {
-    public interface IRenderSurface
-    {
-        Bitmap BackBuffer { get; }
-        Graphics BackGraphics { get; }
-        void SwapBuffers();
-        void RenderBackground(Color color);
-        void RenderBitmap(Bitmap bitmap, Point location);
-        void RenderBitmap(Bitmap bitmap, int x, int y);
-    }
-
     public class RenderSurface : UserControl, IRenderSurface
     {
         private Bitmap backbuffer = new Bitmap(Utility.FIELD_SIZE, Utility.FIELD_SIZE);
@@ -55,6 +45,24 @@ namespace SharpPixel
             e.Graphics.SmoothingMode = SmoothingMode.None;            
             e.Graphics.DrawImage(backbuffer, new Rectangle(new Point(0, 0), Utility.WindowSize), new Rectangle(0, 0, backbuffer.Width, backbuffer.Height), GraphicsUnit.Pixel);
         }
+
+        protected override bool IsInputKey(Keys keyData)
+        {
+            switch (keyData)
+            {
+                case Keys.Right:
+                case Keys.Left:
+                case Keys.Up:
+                case Keys.Down:
+                    return true;
+                case Keys.Shift | Keys.Right:
+                case Keys.Shift | Keys.Left:
+                case Keys.Shift | Keys.Up:
+                case Keys.Shift | Keys.Down:
+                    return true;
+            }
+            return base.IsInputKey(keyData);
+        }  
 
         public Bitmap BackBuffer { get { return backbuffer; } }
 

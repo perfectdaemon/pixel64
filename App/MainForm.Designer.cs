@@ -28,8 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            this.mainTimer = new System.Windows.Forms.Timer(this.components);
             this.renderSurface = new SharpPixel.RenderSurface();
             this.SuspendLayout();
+            // 
+            // mainTimer
+            // 
+            this.mainTimer.Enabled = true;
+            this.mainTimer.Interval = 30;
+            this.mainTimer.Tick += new System.EventHandler(this.mainTimer_Tick);
             // 
             // renderSurface
             // 
@@ -39,6 +47,8 @@
             this.renderSurface.Size = new System.Drawing.Size(563, 321);
             this.renderSurface.TabIndex = 0;
             this.renderSurface.TabStop = false;
+            this.renderSurface.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
+            this.renderSurface.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
             // 
             // MainForm
             // 
@@ -49,9 +59,11 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Special for igdc#125 by perfect.daemon";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
             this.ResumeLayout(false);
 
         }
@@ -59,6 +71,7 @@
         #endregion
 
         private SharpPixel.RenderSurface renderSurface;
+        private System.Windows.Forms.Timer mainTimer;
 
     }
 }
