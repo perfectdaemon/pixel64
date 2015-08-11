@@ -49,7 +49,6 @@
     <Compile Include="Game\Interfaces\IGameOverMenu.cs" />
     <Compile Include="Game\Interfaces\IMainMenu.cs" />
     <Compile Include="Game\Interfaces\IScene.cs" />
-    <Compile Include="Game\NumberRenderer.cs" />
     <Compile Include="Game\ResourceManager.cs" />
     <Compile Include="Game\Utility.cs" />
     <Compile Include="Engine\MainForm.cs">
