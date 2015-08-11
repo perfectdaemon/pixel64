@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace SharpPixel
 {
-    class GameMenu : IGameMenu
+    class MainMenu : IMainMenu
     {
         private enum MenuItem { Game, Exit }
 
@@ -44,9 +44,13 @@ namespace SharpPixel
             this.controller = controller;
         }
 
-        public void Initialize(IRenderSurface surface, IGame game)
+        public void SetRenderSurface(IRenderSurface surface)
         {
             this.surface = surface;
+        }
+
+        public void Initialize(IGame game)
+        {            
             this.game = game;
         }
 
@@ -54,11 +58,11 @@ namespace SharpPixel
         {
             try
             {
-                gameBitmap = new Bitmap(Utility.GetResourcePath("game"));
-                exitBitmap = new Bitmap(Utility.GetResourcePath("exit"));
-                forIgdcBitmap = new Bitmap(Utility.GetResourcePath("igdc"));
-                arrowBitmap = new Bitmap(Utility.GetResourcePath("arrow"));
-                paletteBitmap = new Bitmap(Utility.GetResourcePath("palette"));
+                gameBitmap = ResourceManager.GetBitmapResource("game"); //new Bitmap(Utility.GetResourcePath("game"));
+                exitBitmap = ResourceManager.GetBitmapResource("exit");
+                forIgdcBitmap = ResourceManager.GetBitmapResource("igdc");
+                arrowBitmap = ResourceManager.GetBitmapResource("arrow");
+                paletteBitmap = ResourceManager.GetBitmapResource("palette");
                 arrowPos = 16;
             }
             catch (Exception ex)
@@ -67,25 +71,27 @@ namespace SharpPixel
             }
         }
 
-        public void RenderSelf()
+        public void Render()
         {            
-            surface.RenderBackground(Color.FromArgb(98, 98, 98));
-            surface.RenderBitmap(paletteBitmap, 1, 1);
+            surface.RenderBackground(Utility.GrayMiddle);
+            //surface.RenderBitmap(paletteBitmap, 1, 1);
             surface.RenderBitmap(gameBitmap, 15, 15);
             surface.RenderBitmap(exitBitmap, 15, 30);
             surface.RenderBitmap(arrowBitmap, 6, arrowPos);
-            surface.RenderBitmap(forIgdcBitmap, 4, 54);
+            //for debug
+            //surface.RenderNumber(4815, 5, 42, -1);
+            surface.RenderBitmap(forIgdcBitmap, 4, 54);            
             surface.SwapBuffers();
         }
 
-        public void HandleKeys(KeyEventArgs e)
+        public void OnKeyDown(KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
                 case Keys.Up:
                 case Keys.Down:
                     Current = (Current == MenuItem.Game) ? MenuItem.Exit : MenuItem.Game;
-                    RenderSelf();
+                    Render();
                     break;
 
                 case Keys.Return:

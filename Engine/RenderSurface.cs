@@ -12,6 +12,8 @@ namespace SharpPixel
     public class RenderSurface : UserControl, IRenderSurface
     {
         private Bitmap backbuffer = new Bitmap(Utility.FIELD_SIZE, Utility.FIELD_SIZE);
+        private Bitmap numbersBitmap;
+        private int digitWidth;
         private Graphics bbGraphics;
         private Rectangle rect;
         private SolidBrush brush = new SolidBrush(Color.Black);
@@ -68,6 +70,12 @@ namespace SharpPixel
 
         public Graphics BackGraphics { get { return bbGraphics; } }
 
+        public void SetNumbersBitmap(Bitmap bitmap, int digitWidth)
+        {
+            this.numbersBitmap = bitmap;
+            this.digitWidth = digitWidth;
+        }
+
         public void SwapBuffers()
         {
             this.Invalidate();
@@ -75,7 +83,7 @@ namespace SharpPixel
 
         public void RenderBitmap(Bitmap bitmap, Point location)
         {
-            bbGraphics.DrawImage(bitmap, new Rectangle(location.X, location.Y, bitmap.Width, bitmap.Height));
+            this.RenderBitmap(bitmap, location.X, location.Y);            
         }
 
         public void RenderBitmap(Bitmap bitmap, int x, int y)
@@ -87,6 +95,26 @@ namespace SharpPixel
         {
             brush.Color = color;
             bbGraphics.FillRectangle(brush, rect);
+        }
+
+        public void RenderNumber(int number, Point location, int interval = 0)
+        {
+            this.RenderNumber(number, location.X, location.Y, interval);
+        }
+
+        public void RenderNumber(int number, int x, int y, int interval = 0)
+        {
+            string numberStr = number.ToString();
+            int xOffset = 0;
+            foreach (char digitChar in numberStr)
+            {
+                int digit = int.Parse(digitChar.ToString());
+                bbGraphics.DrawImage(numbersBitmap,
+                    new Rectangle(x + xOffset, y, digitWidth, numbersBitmap.Height), 
+                    new Rectangle(digit * digitWidth, 0, digitWidth, numbersBitmap.Height), 
+                    GraphicsUnit.Pixel);
+                xOffset += digitWidth + interval;
+            }
         }
     }
 }

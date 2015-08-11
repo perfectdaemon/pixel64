@@ -16,7 +16,7 @@ namespace SharpPixel
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
             Utility.KeyDown[e.KeyCode] = true;
-            controller.HandleKeys(e);            
+            controller.OnKeyDown(e);            
         }
 
         private void mainTimer_Tick(object sender, EventArgs e)
@@ -45,7 +45,7 @@ namespace SharpPixel
         public MainForm()
         {
             InitializeComponent();
-            controller.Initialize(this.renderSurface);
+            controller.SetRenderSurface(this.renderSurface);
             dt = mainTimer.Interval / 1000d;
         }
 

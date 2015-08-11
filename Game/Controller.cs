@@ -1,31 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace SharpPixel
 {
     class Controller : IController
     {
-        private IGameMenu menu;
+        private IMainMenu menu;
         private IGame game;
+        private IGameOverMenu gameOver;
         private IRenderSurface surface;
 
         private IScene currentScene = null;
 
-        public void Initialize(IRenderSurface surface)
+        public void SetRenderSurface(IRenderSurface surface)
         {
             this.surface = surface;
+            surface.SetNumbersBitmap(ResourceManager.GetBitmapResource("Numbers"), 5);
 
+            gameOver = new GameOverMenu();
             game = new Game();
-            game.SetController(this);
-            game.Initialize(surface, menu);
-            game.LoadResources();
+            menu = new MainMenu();
+
             
-            menu = new GameMenu();
+            game.SetController(this);
+            game.SetRenderSurface(surface);
+            game.Initialize(menu, gameOver);
+            game.LoadResources();            
+            
             menu.SetController(this);
-            menu.Initialize(surface, game);           
+            menu.SetRenderSurface(surface);
+            menu.Initialize(game);           
             menu.LoadResources();
+
+            gameOver.SetController(this);
+            gameOver.SetRenderSurface(surface);
+            gameOver.Initialize(game);
+            gameOver.LoadResources();
 
             currentScene = menu;
 
@@ -38,16 +47,16 @@ namespace SharpPixel
                 currentScene.Update(dt);
         }
 
-        public void HandleKeys(KeyEventArgs e)
+        public void OnKeyDown(KeyEventArgs e)
         {
             if (currentScene != null)
-                currentScene.HandleKeys(e);
+                currentScene.OnKeyDown(e);
         }
 
         public void Render()
         {
             if (currentScene != null)
-                currentScene.RenderSelf();
+                currentScene.Render();
         }
 
         public void SwitchTo(IScene scene)

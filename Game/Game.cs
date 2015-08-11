@@ -9,42 +9,48 @@ namespace SharpPixel
     class Game : IGame
     {
         private IRenderSurface surface;
-        private IGameMenu menu;
+        private IMainMenu mainMenu;
+        private IGameOverMenu gameOverMenu;
         private IController controller;
 
         private Point carPos;
-        private Bitmap carBitmap, carShadowBitmap, fuelBitmap, roadSignBitmap;
+        private Bitmap carBitmap, carShadowBitmap, fuelBitmap, roadSignBitmap, smokeBitmap;
         
         public void SetController(IController controller)
         {
             this.controller = controller;
         }
 
-        public void Initialize(IRenderSurface surface, IGameMenu menu)
+        public void SetRenderSurface(IRenderSurface surface)
         {
             this.surface = surface;
-            this.menu = menu;
+        }
 
+        public void Initialize(IMainMenu mainMenu, IGameOverMenu gameOverMenu)
+        {            
+            this.mainMenu = mainMenu;
+            this.gameOverMenu = gameOverMenu;
             carPos = new Point(10, 10);
         }
 
-        public void HandleKeys(KeyEventArgs e)
+        public void OnKeyDown(KeyEventArgs e)
         {            
-            RenderSelf();
+            Render();
         }
 
         public void LoadResources()
         {
-            carBitmap = new Bitmap(Utility.GetResourcePath("Car"));
-            carShadowBitmap = new Bitmap(Utility.GetResourcePath("CarShadow"));
-            fuelBitmap = new Bitmap(Utility.GetResourcePath("Fuel"));
-            roadSignBitmap = new Bitmap(Utility.GetResourcePath("Roadsign"));
+            carBitmap = ResourceManager.GetBitmapResource("Car");
+            carShadowBitmap = ResourceManager.GetBitmapResource("CarShadow");
+            fuelBitmap = ResourceManager.GetBitmapResource("Fuel");
+            roadSignBitmap = ResourceManager.GetBitmapResource("Roadsign");
+            smokeBitmap = ResourceManager.GetBitmapResource("smoke");
         }
 
-        public void RenderSelf()
+        public void Render()
         {
             surface.RenderBackground(Utility.GrayLight);
-            surface.RenderBitmap(carShadowBitmap, carPos.X - 1, carPos.Y - 1);
+            surface.RenderBitmap(carShadowBitmap, carPos.X + 1, carPos.Y + 1);
             surface.RenderBitmap(carBitmap, carPos);
             surface.SwapBuffers();
         }
@@ -60,7 +66,9 @@ namespace SharpPixel
                 carPos.Y--;
             else if (Utility.KeyDown[Keys.Down])
                 carPos.Y++;
-            RenderSelf();
+            Render();
+
+            gameOverMenu.SetScore(55023);            
         }
     }
 }

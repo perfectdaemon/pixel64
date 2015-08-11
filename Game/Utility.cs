@@ -6,20 +6,16 @@ using SharpPixel.Properties;
 
 namespace SharpPixel
 {
-    public static class Utility
+    static class Utility
     {
         public const int FIELD_SIZE = 64;        
         
         public static readonly Size WindowSize;
 
         public static readonly Color GrayLight = Color.FromArgb(122, 122, 122);
+        public static readonly Color GrayMiddle = Color.FromArgb(98, 98, 98);
 
         public static readonly Dictionary<Keys, bool> KeyDown = new Dictionary<Keys, bool>();
-
-        public static string GetResourcePath(string resourceName)
-        {
-            return string.Format("sprites/{0}.png", resourceName);
-        }
 
         static Utility()
         { 
