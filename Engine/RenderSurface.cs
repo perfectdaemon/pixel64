@@ -91,6 +91,19 @@ namespace SharpPixel
             bbGraphics.DrawImage(bitmap, new Rectangle(x, y, bitmap.Width, bitmap.Height));
         }
 
+        public void RenderBitmap(Bitmap bitmap, int x, int y, int rotation)
+        {
+            bbGraphics.TranslateTransform(x, y);            
+            bbGraphics.RotateTransform(rotation);            
+            bbGraphics.DrawImage(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height));
+            bbGraphics.ResetTransform();
+        }
+
+        public void RenderBitmap(Bitmap bitmap, Point location, int rotation)
+        {
+            this.RenderBitmap(bitmap, location.X, location.Y, rotation);
+        }
+
         public void RenderBackground(Color color)
         {
             brush.Color = color;
