@@ -10,13 +10,13 @@ namespace SharpPixel
     {
         private enum MenuItem { Retry, Exit }
 
-        private IGame game;
+        private IGameScene game;
         private IController controller;
         private IRenderSurface surface;
 
         private Bitmap retryBitmap, exitBitmap, arrowBitmap, scoreBitmap;
         
-        private int arrowPos;
+        private int arrowPos = 36;
 
         private int score;
 
@@ -32,10 +32,10 @@ namespace SharpPixel
                     switch (current)
                     {
                         case MenuItem.Retry:
-                            arrowPos = 16;
+                            arrowPos = 36;
                             break;
                         case MenuItem.Exit:
-                            arrowPos = 31;
+                            arrowPos = 52;
                             break;
                     }
                 }
@@ -44,7 +44,7 @@ namespace SharpPixel
 
         #region Члены IGameOverMenu
 
-        public void Initialize(IGame game)
+        public void Initialize(IGameScene game)
         {
             this.game = game;
         }
@@ -71,7 +71,33 @@ namespace SharpPixel
 
         public void OnKeyDown(KeyEventArgs e)
         {
-            //
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                case Keys.Down:
+                    Current = (Current == MenuItem.Retry) ? MenuItem.Exit : MenuItem.Retry;
+                    Render();
+                    break;
+
+                case Keys.Return:
+                    switch (Current)
+                    {
+                        case MenuItem.Retry:
+                            game.Reset();
+                            controller.SwitchTo(game);
+                            break;
+                        case MenuItem.Exit:
+                            Application.Exit();
+                            break;
+                    }
+                    break;
+
+                case Keys.Escape:
+                    Application.Exit();
+                    break;
+                default:
+                    break;
+            } 
             Render();
         }
 
@@ -87,7 +113,10 @@ namespace SharpPixel
         {            
             surface.RenderBackground(Utility.GrayMiddle);
             surface.RenderBitmap(scoreBitmap, 15, 5);
-            surface.RenderNumber(score, 10, 20, -1);
+
+            int xOffset = score.ToString().Length * 3 / 2;
+            surface.RenderNumber(score, 30 - xOffset, 20, -1);
+
             surface.RenderBitmap(retryBitmap, 15, 35);
             surface.RenderBitmap(exitBitmap, 15, 50);
             surface.RenderBitmap(arrowBitmap, 6, arrowPos);
@@ -97,6 +126,11 @@ namespace SharpPixel
         public void Update(double dt)
         {
             // Nothing
+        }
+
+        public void Reset()
+        {
+            score = 0;
         }
 
         #endregion

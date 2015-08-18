@@ -12,7 +12,7 @@ namespace SharpPixel
 
         private IRenderSurface surface;
         private IController controller;
-        private IGame game;
+        private IGameScene game;
 
         private Bitmap gameBitmap, exitBitmap, forIgdcBitmap, arrowBitmap, paletteBitmap;        
         private int arrowPos;
@@ -49,7 +49,7 @@ namespace SharpPixel
             this.surface = surface;
         }
 
-        public void Initialize(IGame game)
+        public void Initialize(IGameScene game)
         {            
             this.game = game;
         }
@@ -98,7 +98,8 @@ namespace SharpPixel
                     switch (Current)
                     { 
                         case MenuItem.Game:
-                            controller.SwitchTo(game);
+                            game.Reset();
+                            controller.SwitchTo(game);                            
                             break;
                         case MenuItem.Exit:
                             Application.Exit();
@@ -106,12 +107,18 @@ namespace SharpPixel
                     }
                     break;
 
+                case Keys.Escape:
+                    Application.Exit();
+                    break;
                 default:
                     break;
             }            
         }
 
         public void Update(double dt)
+        { }
+
+        public void Reset()
         { }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace SharpPixel
 {
-    interface IGame : IScene
+    interface IGameScene : IScene
     {        
         void Initialize(IMainMenu mainMenu, IGameOverMenu gameOverMenu);        
     }

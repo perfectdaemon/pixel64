@@ -7,7 +7,9 @@ namespace SharpPixel
         void SetController(IController controller);
         void SetRenderSurface(IRenderSurface surface);        
         
-        void LoadResources();        
+        void LoadResources();
+
+        void Reset();
         
         void Render();
         void OnKeyDown(KeyEventArgs e);

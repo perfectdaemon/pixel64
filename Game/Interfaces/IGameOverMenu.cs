@@ -2,7 +2,7 @@
 {
     interface IGameOverMenu : IScene
     {
-        void Initialize(IGame game);
+        void Initialize(IGameScene game);
         void SetScore(int score);
     }
 }

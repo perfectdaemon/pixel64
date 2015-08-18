@@ -2,6 +2,6 @@
 {
     interface IMainMenu : IScene
     {
-        void Initialize(IGame game);        
+        void Initialize(IGameScene game);        
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System.Windows.Forms;
+using SharpPixel.Game;
 
 namespace SharpPixel
 {
     class Controller : IController
     {
         private IMainMenu menu;
-        private IGame game;
+        private IGameScene game;
         private IGameOverMenu gameOver;
         private IRenderSurface surface;
 
@@ -17,14 +18,14 @@ namespace SharpPixel
             surface.SetNumbersBitmap(ResourceManager.GetBitmapResource("Numbers"), 5);
 
             gameOver = new GameOverMenu();
-            game = new Game();
+            game = new GameScene();
             menu = new MainMenu();
-
             
             game.SetController(this);
             game.SetRenderSurface(surface);
             game.Initialize(menu, gameOver);
-            game.LoadResources();            
+            game.LoadResources();
+            game.Reset();
             
             menu.SetController(this);
             menu.SetRenderSurface(surface);
@@ -35,7 +36,7 @@ namespace SharpPixel
             gameOver.SetRenderSurface(surface);
             gameOver.Initialize(game);
             gameOver.LoadResources();
-
+            
             currentScene = menu;
 
             Render();
@@ -63,7 +64,7 @@ namespace SharpPixel
         {
             if (scene != currentScene)
             {
-                currentScene = scene;
+                currentScene = scene;                
                 Render();
             }
         }
