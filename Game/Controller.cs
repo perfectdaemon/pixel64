@@ -1,5 +1,7 @@
 ﻿using System.Windows.Forms;
+using System.Drawing.Imaging;
 using SharpPixel.Game;
+using System;
 
 namespace SharpPixel
 {
@@ -12,6 +14,14 @@ namespace SharpPixel
 
         private IScene currentScene = null;
 
+        private bool doTakeScreenshot = false;
+
+        private void TakeAndSaveScreenshot()
+        {
+            var screenshot = surface.TakeScreenshot();
+            screenshot.Save(string.Format("scr_{0}.png", DateTime.Now.ToString("yyyyMMdd_HH-mm-ss")), ImageFormat.Png);
+        }
+
         public void SetRenderSurface(IRenderSurface surface)
         {
             this.surface = surface;
@@ -20,23 +30,23 @@ namespace SharpPixel
             gameOver = new GameOverMenu();
             game = new GameScene();
             menu = new MainMenu();
-            
+
             game.SetController(this);
             game.SetRenderSurface(surface);
             game.Initialize(menu, gameOver);
             game.LoadResources();
             game.Reset();
-            
+
             menu.SetController(this);
             menu.SetRenderSurface(surface);
-            menu.Initialize(game);           
+            menu.Initialize(game);
             menu.LoadResources();
 
             gameOver.SetController(this);
             gameOver.SetRenderSurface(surface);
             gameOver.Initialize(game);
             gameOver.LoadResources();
-            
+
             currentScene = menu;
 
             Render();
@@ -46,12 +56,20 @@ namespace SharpPixel
         {
             if (currentScene != null)
                 currentScene.Update(dt);
+            if (doTakeScreenshot)
+            {
+                TakeAndSaveScreenshot();
+                doTakeScreenshot = false;
+            }
         }
 
         public void OnKeyDown(KeyEventArgs e)
         {
             if (currentScene != null)
                 currentScene.OnKeyDown(e);
+            if (e.KeyCode == Keys.F12)
+                doTakeScreenshot = true;
+
         }
 
         public void Render()
@@ -64,7 +82,7 @@ namespace SharpPixel
         {
             if (scene != currentScene)
             {
-                currentScene = scene;                
+                currentScene = scene;
                 Render();
             }
         }
