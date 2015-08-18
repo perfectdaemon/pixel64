@@ -18,5 +18,6 @@ namespace SharpPixel
         void RenderBitmap(Bitmap bitmap, Point location, int rotation);
         void RenderNumber(int number, Point location, int interval = 0);
         void RenderNumber(int number, int x, int y, int interval = 0);
+        Bitmap TakeScreenshot();
     }
 }

@@ -129,5 +129,18 @@ namespace SharpPixel
                 xOffset += digitWidth + interval;
             }
         }
+
+        public Bitmap TakeScreenshot()
+        {
+            var bitmap = new Bitmap(ClientSize.Width, ClientSize.Height);
+            using (var g = Graphics.FromImage(bitmap))
+            {
+                g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                g.PixelOffsetMode = PixelOffsetMode.Half;
+                g.SmoothingMode = SmoothingMode.None;
+                g.DrawImage(backbuffer, new Rectangle(new Point(0, 0), Utility.WindowSize), new Rectangle(0, 0, backbuffer.Width, backbuffer.Height), GraphicsUnit.Pixel);
+            }
+            return bitmap;
+        }
     }
 }
