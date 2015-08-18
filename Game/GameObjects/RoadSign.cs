@@ -11,6 +11,7 @@ namespace SharpPixel.Game.GameObjects
             : base(bitmap, location)
         {
             this.Type = GameObjectType.Obstacle;
+            this.CollisionRect = new Rectangle(2, 2, bitmap.Width - 4, bitmap.Height - 2);
         }
 
         public override void Update(double dt)
