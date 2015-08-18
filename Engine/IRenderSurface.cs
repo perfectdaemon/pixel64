@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SharpPixel
 {
-    interface IRenderSurface
+    public interface IRenderSurface
     {
         Bitmap BackBuffer { get; }
         Graphics BackGraphics { get; }
