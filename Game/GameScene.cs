@@ -12,10 +12,10 @@ using SharpPixel.Game.Interfaces;
  */
 namespace SharpPixel.Game
 {
-    class GameScene : Scene, IGameScene
+    public class GameScene : Scene, IGameScene
     {
         private IMainMenu mainMenu;
-        private IGameOverMenu gameOverMenu;        
+        private IGameOverMenu gameOverMenu;
 
         private List<GameObject>
             allGameObjects = new List<GameObject>(),
@@ -26,11 +26,11 @@ namespace SharpPixel.Game
 
         private ActionManager actionManager = new ActionManager();
 
-        private int oldDistance, distance = 0, score = 0;
-        private double distanceD = 0.0d, speed = Utility.SPEED_START;
-        private bool isGameOver = false;
+        private int oldDistance, distance, score;
+        private double distanceD, speed;
+        private bool isGameOver;
         private int livesCount;
-        private double spawnTimer, spawnFuelTimer;
+        private double spawnTimer, spawnPeriod, spawnFuelTimer;
 
         private Random random = new Random();
 
@@ -55,8 +55,7 @@ namespace SharpPixel.Game
         {
             switch (gameObject.Type)
             {
-                case GameObjectType.Obstacle:
-                case GameObjectType.Trigger:
+                case GameObjectType.Obstacle:                
                 case GameObjectType.Collectable:
                 case GameObjectType.Civilian:
                     gameObject.Location.Y += distance - oldDistance;
@@ -70,8 +69,7 @@ namespace SharpPixel.Game
                 return;
             switch (gameObject.Type)
             {
-                case GameObjectType.Collectable:
-                case GameObjectType.EnemyBullet:
+                case GameObjectType.Collectable:                
                     if (gameObject.DoesCollideWith(player))
                     {
                         gameObject.OnCollect(player);
@@ -82,8 +80,7 @@ namespace SharpPixel.Game
                     }
                     break;
 
-                case GameObjectType.Civilian:
-                case GameObjectType.Enemy:
+                case GameObjectType.Civilian:                
                 case GameObjectType.Obstacle:
                     if (gameObject.DoesCollideWith(player) && !blinking)
                     {
@@ -114,20 +111,15 @@ namespace SharpPixel.Game
                                 {
                                     player.Visible = true;
                                     blinking = false;
-                                    blinkingTimer = -1;                                    
+                                    blinkingTimer = -1;
                                 });
                     }
-                    break;
-
-                case GameObjectType.Trigger:
-                    if (gameObject.DoesCollideWith(player))
-                        gameObject.OnTrigger();
-                    break;
+                    break;                
             }
         }
 
         private void SpawnFuel()
-        {         
+        {
             int lane = random.Next(Utility.LANES_COUNT);
             var position = new Point(4 + lane * Utility.LaneWidth, -40);
 
@@ -162,8 +154,8 @@ namespace SharpPixel.Game
         }
 
         private void SpawnSomething()
-        {                        
-            int spawnType = random.Next(100);            
+        {
+            int spawnType = random.Next(100);
             int lane = random.Next(Utility.LANES_COUNT);
             var position = new Point(4 + lane * Utility.LaneWidth, -40);
             if (spawnType < 40)
@@ -171,8 +163,8 @@ namespace SharpPixel.Game
             else if (spawnType < 95)
                 SpawnCivialian(position, 6 + random.Next(5));
             else
-                SpawnLife(position);            
-        }        
+                SpawnLife(position);
+        }
 
         private void RenderRoadMarking()
         {
@@ -207,7 +199,7 @@ namespace SharpPixel.Game
             int length = (int)(23 * player.FuelLevel / Utility.FUEL_MAX);
             if (length > 0)
                 surface.BackGraphics.FillRectangle(brush, new Rectangle(38, 59, length, 3));
-        }        
+        }
 
         public void Initialize(IMainMenu mainMenu, IGameOverMenu gameOverMenu)
         {
@@ -273,9 +265,10 @@ namespace SharpPixel.Game
             if (spawnTimer > 0)
                 spawnTimer -= dt;
             else
-            {            
+            {
                 SpawnSomething();
-                spawnTimer = Utility.SPAWN_PERIOD;
+                spawnTimer = spawnPeriod;
+                spawnPeriod = Utility.Clamp(spawnPeriod - Utility.SPAWN_PERIOD_DEC, Utility.SPAWN_PERIOD_MIN, Utility.SPAWN_PERIOD_START);
             }
 
             if (spawnFuelTimer > 0)
@@ -301,7 +294,7 @@ namespace SharpPixel.Game
             {
                 gameOverMenu.SetScore(score);
                 controller.SwitchTo(gameOverMenu);
-            }            
+            }
         }
 
         public override void Reset()
@@ -312,6 +305,8 @@ namespace SharpPixel.Game
             distanceD = 0.0d;
             speed = Utility.SPEED_START;
             spawnTimer = 0.0d;
+            spawnPeriod = Utility.SPAWN_PERIOD_START;
+            spawnFuelTimer = 0.0d;
 
             isGameOver = false;
             blinking = false;
@@ -331,7 +326,7 @@ namespace SharpPixel.Game
             {
                 livesCount = Utility.Clamp(livesCount + 1, 0, Utility.LIVES_MAX);
             };
-            allGameObjects.Add(player);            
+            allGameObjects.Add(player);
         }
     }
 }

@@ -8,24 +8,26 @@ namespace SharpPixel
 {
     public static class Utility
     {
-         // Consts block
+        // Consts block
         public const int FIELD_SIZE = 64;
         public const int LANES_COUNT = 4;
 
         public const double SPEED_START = 23.0d,
             SPEED_INC = 5d,
-            SPEED_MAX = 75d;
+            SPEED_MAX = 80d;
 
         public const double FUEL_MAX = 100.0d,
             FUEL_DEC = 5.0d,
             FUEL_ADD = 25.0d;
 
-        public const double SPAWN_PERIOD = 1.4d,
-            SPAWN_FUEL_PERIOD = 4.0d;
+        public const double SPAWN_PERIOD_START = 1.4d,
+            SPAWN_PERIOD_DEC = 0.05d,
+            SPAWN_PERIOD_MIN = 0.6d,
+            SPAWN_FUEL_PERIOD = 4.2d;
 
         public const int LIVES_START = 3,
             LIVES_MAX = 5;
-        
+
         public static readonly Size WindowSize;
 
         public static int LaneWidth { get { return FIELD_SIZE / LANES_COUNT; } }
@@ -42,7 +44,7 @@ namespace SharpPixel
         public static readonly Dictionary<Keys, bool> KeyDown = new Dictionary<Keys, bool>();
 
         static Utility()
-        { 
+        {
             var settings = Settings.Default;
             if (settings != null)
                 WindowSize = new Size(settings.WindowSize, settings.WindowSize);
