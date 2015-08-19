@@ -4,15 +4,32 @@ using System.Drawing;
 
 namespace SharpPixel.Engine
 {
-    class ResourceManager
+    /// <summary>
+    /// Simple resource manager
+    /// </summary>
+    public static class ResourceManager
     {
+        /// <summary>
+        /// Dictionary with "resource name - Bitmap object" pair
+        /// </summary>
         private static readonly Dictionary<string, Bitmap> bitmapResources = new Dictionary<string, Bitmap>();
 
+        /// <summary>
+        /// Returns full path based on resource name
+        /// </summary>
+        /// <param name="resourceName">Resource name without extension</param>
+        /// <returns>Path to specified resource</returns>
         private static string GetResourcePath(string resourceName)
         {
             return string.Format("sprites/{0}.png", resourceName);
         }
 
+        /// <summary>
+        /// Returns bitmap resource based on it's name from internal storage
+        /// </summary>
+        /// <param name="resourceName">Resource name without extension</param>
+        /// <param name="clone">If true - clones resource</param>
+        /// <returns>Bitmap resource</returns>
         public static Bitmap GetBitmapResource(string resourceName, bool clone = false)
         {
             try
@@ -35,6 +52,11 @@ namespace SharpPixel.Engine
             }
         }
 
+        /// <summary>
+        /// Returns full path to audio resources based on resource name
+        /// </summary>
+        /// <param name="resourceName">Audio file name without extension</param>
+        /// <returns>Path to audio resource</returns>
         public static string GetAudioResourcePath(string resourceName)
         {
             return string.Format("sounds/{0}.ogg", resourceName);

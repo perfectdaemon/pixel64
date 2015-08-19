@@ -11,7 +11,7 @@ namespace SharpPixel.Engine
     /// ContinuousAction represents action that performs for some period
     /// </summary>
     /// <param name="dt">Deltatime</param>
-    public delegate void ContinuousAction(double dt);   
+    public delegate void ContinuousAction(double dt);
 
     /// <summary>
     /// Base class that stores info about action performing
@@ -43,7 +43,7 @@ namespace SharpPixel.Engine
         /// <summary>
         /// Action that should be performed
         /// </summary>
-        public SimpleAction Action = null;        
+        public SimpleAction Action = null;
 
         /// <summary>
         /// Performes action if it's not done and if it's time to do that
@@ -153,8 +153,12 @@ namespace SharpPixel.Engine
         {
             queueActions.Enqueue(new ContinuousActionInfo(action, period, startAfter));
             return this;
-        }   
+        }
 
+        /// <summary>
+        /// Call this method every frame to perform actions
+        /// </summary>
+        /// <param name="dt">DeltaTime - time between frames</param>
         public void Update(double dt)
         {
             foreach (var action in simpleActions)
@@ -182,6 +186,9 @@ namespace SharpPixel.Engine
             continuousActions.RemoveAll(a => a.Done);
         }
 
+        /// <summary>
+        /// Clears all actions in queue and lists
+        /// </summary>
         public void ClearAll()
         {
             simpleActions.Clear();

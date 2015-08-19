@@ -18,7 +18,7 @@ namespace SharpPixel.Engine
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
             Utility.KeyDown[e.KeyCode] = true;
-            controller.OnKeyDown(e);            
+            controller.OnKeyDown(e);
         }
 
         private void mainTimer_Tick(object sender, EventArgs e)
@@ -42,7 +42,7 @@ namespace SharpPixel.Engine
                     return true;
             }
             return base.IsInputKey(keyData);
-        }        
+        }
 
         public MainForm()
         {
@@ -50,15 +50,15 @@ namespace SharpPixel.Engine
             dt = mainTimer.Interval / 1000d;
 
             sound.LoadResources();
-            
+
             controller.SetSound(sound);
-            controller.SetRenderSurface(this.renderSurface);            
-            controller.Start();            
+            controller.SetRenderSurface(this.renderSurface);
+            controller.Start();
         }
 
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
             Utility.KeyDown[e.KeyCode] = false;
-        }                              
-    }   
+        }
+    }
 }
