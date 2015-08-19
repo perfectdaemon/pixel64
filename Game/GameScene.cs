@@ -321,7 +321,7 @@ namespace SharpPixel.Game
 
             actionManager.ClearAll();
 
-            player = new Player(carBitmap, carShadowBitmap, smokeBitmap, new Point(12, 10));
+            player = new Player(carBitmap, carShadowBitmap, smokeBitmap, new Point(19, 42));
             player.OnLifeCollect = () =>
             {
                 livesCount = Utility.Clamp(livesCount + 1, 0, Utility.LIVES_MAX);
