@@ -4,7 +4,8 @@ namespace SharpPixel.Game.GameObjects
 {
     public class Fuel : GameObject
     {
-        public Fuel(Bitmap bitmap, Point location) : base(bitmap, location)
+        public Fuel(Bitmap bitmap, Point location)
+            : base(bitmap, location)
         {
             this.Type = GameObjectType.Collectable;
         }

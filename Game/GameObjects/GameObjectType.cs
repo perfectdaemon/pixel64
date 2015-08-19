@@ -6,11 +6,6 @@
     public enum GameObjectType
     {
         /// <summary>
-        /// Триггер
-        /// </summary>
-        Trigger,
-        
-        /// <summary>
         /// Игрок
         /// </summary>
         Player,
@@ -28,21 +23,6 @@
         /// <summary>
         /// Гражданские авто
         /// </summary>
-        Civilian,
-
-        /// <summary>
-        /// Вражеские авто
-        /// </summary>
-        Enemy,
-
-        /// <summary>
-        /// Снаряды игрока
-        /// </summary>
-        PlayerBullet,
-
-        /// <summary>
-        /// Снаряды противника
-        /// </summary>
-        EnemyBullet
+        Civilian
     }
 }

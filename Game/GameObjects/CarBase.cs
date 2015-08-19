@@ -4,12 +4,33 @@ using SharpPixel.Engine;
 
 namespace SharpPixel.Game.GameObjects
 {
+    /// <summary>
+    /// Base object for cars in the game - player and civilian ones
+    /// </summary>
     public class CarBase : GameObject
     {
+        /// <summary>
+        /// Used for smoke animation
+        /// </summary>
         protected double smokeRotation = new Random().NextDouble() * 10, smokeRotationDirection = 1.0d;
 
-        public Bitmap ShadowBitmap, SmokeBitmap;        
+        /// <summary>
+        /// Car chadow bitmap
+        /// </summary>
+        public Bitmap ShadowBitmap;
 
+        /// <summary>
+        /// Car smoke bitmap
+        /// </summary>
+        public Bitmap SmokeBitmap;        
+
+        /// <summary>
+        /// Instantiates object of this class
+        /// </summary>
+        /// <param name="bitmap">Car bitmap</param>
+        /// <param name="shadowBitmap">Car shadow bitmap</param>
+        /// <param name="smokeBitmap">Car smoke bitmap</param>
+        /// <param name="location">Start location of car</param>
         public CarBase(
             Bitmap bitmap, 
             Bitmap shadowBitmap, 
@@ -34,11 +55,11 @@ namespace SharpPixel.Game.GameObjects
         {
             if (!Visible)
                 return;
-            surface.RenderBitmap(ShadowBitmap, Location.X + 1, Location.Y + 1);         
-            base.Render(surface);            
-            
-            //surface.RenderBitmap(SmokeBitmap, Location.X, Location.Y + 16, (int)smokeRotation);
+            //  Render shadow and car itself
+            surface.RenderBitmap(ShadowBitmap, Location.X + 1, Location.Y + 1);                     
+            base.Render(surface);                                   
 
+            // Calculate and render smoke
             int smokeScale = 0;
             if (smokeRotation > 5)
                 smokeScale = 1;
