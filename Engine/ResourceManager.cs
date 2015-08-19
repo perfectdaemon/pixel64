@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace SharpPixel
+namespace SharpPixel.Engine
 {
     class ResourceManager
     {
@@ -33,6 +33,11 @@ namespace SharpPixel
                         GetResourcePath(resourceName)),
                     aex);
             }
+        }
+
+        public static string GetAudioResourcePath(string resourceName)
+        {
+            return string.Format("sounds/{0}.ogg", resourceName);
         }
     }
 }

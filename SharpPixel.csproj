@@ -24,7 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,6 +33,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.DirectX, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\assembly\GAC\Microsoft.DirectX\1.0.2902.0__31bf3856ad364e35\Microsoft.DirectX.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.DirectX.AudioVideoPlayback, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\assembly\GAC\Microsoft.DirectX.AudioVideoPlayback\1.0.2902.0__31bf3856ad364e35\Microsoft.DirectX.AudioVideoPlayback.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -41,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Engine\ActionManager.cs" />
+    <Compile Include="Engine\ISound.cs" />
+    <Compile Include="Engine\Sound.cs" />
     <Compile Include="Game\Controller.cs" />
     <Compile Include="Game\GameObjects\CarBase.cs" />
     <Compile Include="Game\GameObjects\Civilian.cs" />
@@ -58,7 +68,8 @@
     <Compile Include="Game\Interfaces\IGameOverMenu.cs" />
     <Compile Include="Game\Interfaces\IMainMenu.cs" />
     <Compile Include="Game\Interfaces\IScene.cs" />
-    <Compile Include="Game\ResourceManager.cs" />
+    <Compile Include="Engine\ResourceManager.cs" />
+    <Compile Include="Game\Scene.cs" />
     <Compile Include="Game\Utility.cs" />
     <Compile Include="Engine\MainForm.cs">
       <SubType>Form</SubType>
