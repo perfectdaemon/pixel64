@@ -1,6 +1,6 @@
-﻿namespace SharpPixel
+﻿namespace SharpPixel.Game.Interfaces
 {
-    interface IGameOverMenu : IScene
+    public interface IGameOverMenu : IScene
     {
         void Initialize(IGameScene game);
         void SetScore(int score);

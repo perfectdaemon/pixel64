@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
+using SharpPixel.Engine;
+using SharpPixel.Game.Interfaces;
 
-namespace SharpPixel
+namespace SharpPixel.Game
 {
-    class MainMenu : IMainMenu
+    class MainMenu : Scene, IMainMenu
     {
         private enum MenuItem { Game, Exit }
-
-        private IRenderSurface surface;
-        private IController controller;
+        
         private IGameScene game;
 
         private Bitmap gameBitmap, exitBitmap, forIgdcBitmap, arrowBitmap, paletteBitmap;        
@@ -37,24 +35,14 @@ namespace SharpPixel
                     }
                 }
             }
-        }
-
-        public void SetController(IController controller)
-        {
-            this.controller = controller;
-        }
-
-        public void SetRenderSurface(IRenderSurface surface)
-        {
-            this.surface = surface;
-        }
+        }        
 
         public void Initialize(IGameScene game)
         {            
             this.game = game;
         }
 
-        public void LoadResources()
+        public override void LoadResources()
         {
             try
             {
@@ -71,7 +59,7 @@ namespace SharpPixel
             }
         }
 
-        public void Render()
+        public override void Render()
         {            
             surface.RenderBackground(Utility.GrayMiddle);
             //surface.RenderBitmap(paletteBitmap, 1, 1);
@@ -84,17 +72,19 @@ namespace SharpPixel
             surface.SwapBuffers();
         }
 
-        public void OnKeyDown(KeyEventArgs e)
+        public override void OnKeyDown(KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
                 case Keys.Up:
                 case Keys.Down:
+                    sound.Play(Sounds.Pickup);
                     Current = (Current == MenuItem.Game) ? MenuItem.Exit : MenuItem.Game;
                     Render();
                     break;
 
                 case Keys.Return:
+                    sound.Play(Sounds.LifePickup);
                     switch (Current)
                     { 
                         case MenuItem.Game:
@@ -114,11 +104,5 @@ namespace SharpPixel
                     break;
             }            
         }
-
-        public void Update(double dt)
-        { }
-
-        public void Reset()
-        { }
     }
 }

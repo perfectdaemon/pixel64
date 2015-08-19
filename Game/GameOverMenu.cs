@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
+﻿using System.Drawing;
 using System.Windows.Forms;
+using SharpPixel.Engine;
+using SharpPixel.Game.Interfaces;
 
-namespace SharpPixel
+namespace SharpPixel.Game
 {
-    class GameOverMenu : IGameOverMenu
+    public class GameOverMenu : Scene, IGameOverMenu
     {
         private enum MenuItem { Retry, Exit }
 
-        private IGameScene game;
-        private IController controller;
-        private IRenderSurface surface;
+        private IGameScene game;        
 
         private Bitmap retryBitmap, exitBitmap, arrowBitmap, scoreBitmap;
         
@@ -42,8 +39,6 @@ namespace SharpPixel
             }
         }
 
-        #region Члены IGameOverMenu
-
         public void Initialize(IGameScene game)
         {
             this.game = game;
@@ -55,31 +50,20 @@ namespace SharpPixel
             Render();
         }
 
-        #endregion
 
-        #region Члены IScene
-
-        public void SetController(IController controller)
-        {
-            this.controller = controller;
-        }
-
-        public void SetRenderSurface(IRenderSurface surface)
-        {
-            this.surface = surface;
-        }
-
-        public void OnKeyDown(KeyEventArgs e)
+        public override void OnKeyDown(KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
                 case Keys.Up:
                 case Keys.Down:
                     Current = (Current == MenuItem.Retry) ? MenuItem.Exit : MenuItem.Retry;
+                    sound.Play(Sounds.Pickup);
                     Render();
                     break;
 
                 case Keys.Return:
+                    sound.Play(Sounds.LifePickup);
                     switch (Current)
                     {
                         case MenuItem.Retry:
@@ -101,7 +85,7 @@ namespace SharpPixel
             Render();
         }
 
-        public void LoadResources()
+        public override void LoadResources()
         {
             scoreBitmap = ResourceManager.GetBitmapResource("score");
             retryBitmap = ResourceManager.GetBitmapResource("Retry");
@@ -109,7 +93,7 @@ namespace SharpPixel
             exitBitmap = ResourceManager.GetBitmapResource("exit");            
         }
 
-        public void Render()
+        public override void Render()
         {            
             surface.RenderBackground(Utility.GrayMiddle);
             surface.RenderBitmap(scoreBitmap, 15, 5);
@@ -123,16 +107,9 @@ namespace SharpPixel
             surface.SwapBuffers();
         }
 
-        public void Update(double dt)
-        {
-            // Nothing
-        }
-
-        public void Reset()
+        public override void Reset()
         {
             score = 0;
-        }
-
-        #endregion
+        }        
     }
 }

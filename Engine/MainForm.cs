@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Windows.Forms;
+using SharpPixel.Game;
 
-namespace SharpPixel
+namespace SharpPixel.Engine
 {
     public partial class MainForm : Form
     {
         private Controller controller = new Controller();
+        private Sound sound = new Sound();
         private double dt;
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -45,8 +47,13 @@ namespace SharpPixel
         public MainForm()
         {
             InitializeComponent();
-            controller.SetRenderSurface(this.renderSurface);
             dt = mainTimer.Interval / 1000d;
+
+            sound.LoadResources();
+            
+            controller.SetSound(sound);
+            controller.SetRenderSurface(this.renderSurface);            
+            controller.Start();            
         }
 
         private void MainForm_KeyUp(object sender, KeyEventArgs e)

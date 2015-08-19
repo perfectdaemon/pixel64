@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Windows.Forms;
+using SharpPixel.Engine;
 
-namespace SharpPixel
+namespace SharpPixel.Game.Interfaces
 {
-    interface IController
+    public interface IController
     {
         void SetRenderSurface(IRenderSurface surface);
+        void SetSound(ISound sound);
+
+        void Start();
+
         void OnKeyDown(KeyEventArgs e);
         void Render();
         void Update(double dt);

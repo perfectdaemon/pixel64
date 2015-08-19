@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace SharpPixel
+namespace SharpPixel.Engine
 {
     static class Program
     {

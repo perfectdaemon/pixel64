@@ -1,25 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using SharpPixel.Game.GameObjects;
 using SharpPixel.Engine;
-
+using SharpPixel.Game.GameObjects;
+using SharpPixel.Game.Interfaces;
 
 /*
  TODO:
- * Badaboom on gameover
- * Sounds
+ * Dynamic frequency spawn 
  */
 namespace SharpPixel.Game
 {
-    class GameScene : IGameScene
+    class GameScene : Scene, IGameScene
     {
-        private IRenderSurface surface;
         private IMainMenu mainMenu;
-        private IGameOverMenu gameOverMenu;
-        private IController controller;
+        private IGameOverMenu gameOverMenu;        
 
         private List<GameObject>
             allGameObjects = new List<GameObject>(),
@@ -77,7 +73,13 @@ namespace SharpPixel.Game
                 case GameObjectType.Collectable:
                 case GameObjectType.EnemyBullet:
                     if (gameObject.DoesCollideWith(player))
+                    {
                         gameObject.OnCollect(player);
+                        if (gameObject is Life)
+                            sound.Play(Sounds.LifePickup);
+                        else
+                            sound.Play(Sounds.Pickup);
+                    }
                     break;
 
                 case GameObjectType.Civilian:
@@ -85,6 +87,7 @@ namespace SharpPixel.Game
                 case GameObjectType.Obstacle:
                     if (gameObject.DoesCollideWith(player) && !blinking)
                     {
+                        sound.Play(Sounds.Hit);
                         actionManager
                             .AddToQueue(
                                 () =>
@@ -204,17 +207,7 @@ namespace SharpPixel.Game
             int length = (int)(23 * player.FuelLevel / Utility.FUEL_MAX);
             if (length > 0)
                 surface.BackGraphics.FillRectangle(brush, new Rectangle(38, 59, length, 3));
-        }
-
-        public void SetController(IController controller)
-        {
-            this.controller = controller;
-        }
-
-        public void SetRenderSurface(IRenderSurface surface)
-        {
-            this.surface = surface;
-        }
+        }        
 
         public void Initialize(IMainMenu mainMenu, IGameOverMenu gameOverMenu)
         {
@@ -222,7 +215,7 @@ namespace SharpPixel.Game
             this.gameOverMenu = gameOverMenu;
         }
 
-        public void OnKeyDown(KeyEventArgs e)
+        public override void OnKeyDown(KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
@@ -232,7 +225,7 @@ namespace SharpPixel.Game
             }
         }
 
-        public void LoadResources()
+        public override void LoadResources()
         {
             carBitmap = ResourceManager.GetBitmapResource("Car");
             carShadowBitmap = ResourceManager.GetBitmapResource("CarShadow");
@@ -243,7 +236,7 @@ namespace SharpPixel.Game
             livesBitmap = ResourceManager.GetBitmapResource("Lives");
         }
 
-        public void Render()
+        public override void Render()
         {
             // Background
             surface.RenderBackground(Utility.GrayLight);
@@ -266,7 +259,7 @@ namespace SharpPixel.Game
             surface.SwapBuffers();
         }
 
-        public void Update(double dt)
+        public override void Update(double dt)
         {
             actionManager.Update(dt);
             distanceD += speed * dt;
@@ -308,10 +301,10 @@ namespace SharpPixel.Game
             {
                 gameOverMenu.SetScore(score);
                 controller.SwitchTo(gameOverMenu);
-            }
+            }            
         }
 
-        public void Reset()
+        public override void Reset()
         {
             oldDistance = 0;
             distance = 0;

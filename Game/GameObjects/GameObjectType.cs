@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SharpPixel.Game.GameObjects
+﻿namespace SharpPixel.Game.GameObjects
 {
     /// <summary>
     /// Тип объекта, используется для коллиженов

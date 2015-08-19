@@ -1,11 +1,13 @@
-﻿using System.Windows.Forms;
+﻿using SharpPixel.Engine;
+using System.Windows.Forms;
 
-namespace SharpPixel
+namespace SharpPixel.Game.Interfaces
 {
-    interface IScene
+    public interface IScene
     {
         void SetController(IController controller);
-        void SetRenderSurface(IRenderSurface surface);        
+        void SetRenderSurface(IRenderSurface surface);
+        void SetSound(ISound sound);
         
         void LoadResources();
 

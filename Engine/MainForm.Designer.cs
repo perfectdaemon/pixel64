@@ -1,4 +1,4 @@
-﻿namespace SharpPixel
+﻿namespace SharpPixel.Engine
 {
     partial class MainForm
     {
@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.mainTimer = new System.Windows.Forms.Timer(this.components);
-            this.renderSurface = new SharpPixel.RenderSurface();
+            this.renderSurface = new SharpPixel.Engine.RenderSurface();
             this.SuspendLayout();
             // 
             // mainTimer
@@ -70,7 +70,7 @@
 
         #endregion
 
-        private SharpPixel.RenderSurface renderSurface;
+        private RenderSurface renderSurface;
         private System.Windows.Forms.Timer mainTimer;
 
     }
