@@ -12,7 +12,7 @@ namespace SharpPixel.Game
         
         private IGameScene game;
 
-        private Bitmap gameBitmap, exitBitmap, forIgdcBitmap, arrowBitmap, paletteBitmap;        
+        private Bitmap gameBitmap, exitBitmap, forIgdcBitmap, arrowBitmap, backBitmap;
         private int arrowPos;
         
         private MenuItem current = MenuItem.Game;
@@ -30,7 +30,7 @@ namespace SharpPixel.Game
                             arrowPos = 16;
                             break;
                         case MenuItem.Exit:
-                            arrowPos = 31;
+                            arrowPos = 30;
                             break;
                     }
                 }
@@ -50,7 +50,7 @@ namespace SharpPixel.Game
                 exitBitmap = ResourceManager.GetBitmapResource("exit");
                 forIgdcBitmap = ResourceManager.GetBitmapResource("igdc");
                 arrowBitmap = ResourceManager.GetBitmapResource("arrow");
-                paletteBitmap = ResourceManager.GetBitmapResource("palette");
+                backBitmap = ResourceManager.GetBitmapResource("back1");
                 arrowPos = 16;
             }
             catch (Exception ex)
@@ -61,10 +61,11 @@ namespace SharpPixel.Game
 
         public override void Render()
         {            
-            surface.RenderBackground(Utility.GrayMiddle);
+            surface.RenderBackground(Utility.RedHard);
+            surface.RenderBitmap(backBitmap, 0, 8);
             //surface.RenderBitmap(paletteBitmap, 1, 1);
             surface.RenderBitmap(gameBitmap, 15, 15);
-            surface.RenderBitmap(exitBitmap, 15, 30);
+            surface.RenderBitmap(exitBitmap, 15, 29);
             surface.RenderBitmap(arrowBitmap, 6, arrowPos);
             //for debug
             //surface.RenderNumber(4815, 5, 42, -1);

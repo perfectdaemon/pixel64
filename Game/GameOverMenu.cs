@@ -11,9 +11,9 @@ namespace SharpPixel.Game
 
         private IGameScene game;        
 
-        private Bitmap retryBitmap, exitBitmap, arrowBitmap, scoreBitmap;
+        private Bitmap retryBitmap, exitBitmap, arrowBitmap, scoreBitmap, backBitmap;
         
-        private int arrowPos = 36;
+        private int arrowPos = 37;
 
         private int score;
 
@@ -29,10 +29,10 @@ namespace SharpPixel.Game
                     switch (current)
                     {
                         case MenuItem.Retry:
-                            arrowPos = 36;
+                            arrowPos = 37;
                             break;
                         case MenuItem.Exit:
-                            arrowPos = 52;
+                            arrowPos = 53;
                             break;
                     }
                 }
@@ -90,19 +90,21 @@ namespace SharpPixel.Game
             scoreBitmap = ResourceManager.GetBitmapResource("score");
             retryBitmap = ResourceManager.GetBitmapResource("Retry");
             arrowBitmap = ResourceManager.GetBitmapResource("arrow");
-            exitBitmap = ResourceManager.GetBitmapResource("exit");            
+            exitBitmap = ResourceManager.GetBitmapResource("exit");
+            backBitmap = ResourceManager.GetBitmapResource("back1");
         }
 
         public override void Render()
         {            
             surface.RenderBackground(Utility.GrayMiddle);
-            surface.RenderBitmap(scoreBitmap, 15, 5);
+            surface.RenderBitmap(backBitmap, 0, 30);
+            surface.RenderBitmap(scoreBitmap, 12, 5);
 
             int xOffset = score.ToString().Length * 3 / 2;
-            surface.RenderNumber(score, 30 - xOffset, 20, -1);
+            surface.RenderNumber(score, 30 - xOffset, 18, -1);
 
-            surface.RenderBitmap(retryBitmap, 15, 35);
-            surface.RenderBitmap(exitBitmap, 15, 50);
+            surface.RenderBitmap(retryBitmap, 15, 36);
+            surface.RenderBitmap(exitBitmap, 15, 52);
             surface.RenderBitmap(arrowBitmap, 6, arrowPos);
             surface.SwapBuffers();
         }
