@@ -19,7 +19,6 @@ namespace SharpPixel.Engine
         /// </summary>
         public void LoadResources()
         {
-
             foreach (Sounds en in Enum.GetValues(typeof(Sounds)))
             {
                 var sound = new Audio(ResourceManager.GetAudioResourcePath(en.ToString()), false);
