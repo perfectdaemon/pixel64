@@ -37,29 +37,42 @@ namespace SharpPixel.Game
 
         public void Start()
         {
-            gameOver = new GameOverMenu();
-            game = new GameScene();
-            menu = new MainMenu();
+            try
+            {
+                gameOver = new GameOverMenu();
+                game = new GameScene();
+                menu = new MainMenu();
 
-            game.SetController(this);
-            game.SetRenderSurface(surface);
-            game.SetSound(sound);
-            game.Initialize(menu, gameOver);
-            game.LoadResources();
-            game.Reset();
+                Log.Instance.Write("Game scene init started");
+                game.SetController(this);
+                game.SetRenderSurface(surface);
+                game.SetSound(sound);
+                game.Initialize(menu, gameOver);
+                game.LoadResources();
+                game.Reset();
+                Log.Instance.Write("Game scene init completed");
 
-            menu.SetController(this);
-            menu.SetRenderSurface(surface);
-            menu.SetSound(sound);
-            menu.Initialize(game);
-            menu.LoadResources();
+                Log.Instance.Write("Menu scene init started");
+                menu.SetController(this);
+                menu.SetRenderSurface(surface);
+                menu.SetSound(sound);
+                menu.Initialize(game);
+                menu.LoadResources();
+                Log.Instance.Write("Menu scene init completed");
 
-            gameOver.SetController(this);
-            gameOver.SetRenderSurface(surface);
-            gameOver.SetSound(sound);
-            gameOver.Initialize(game);
-            gameOver.LoadResources();
-
+                Log.Instance.Write("GameOver scene init started");
+                gameOver.SetController(this);
+                gameOver.SetRenderSurface(surface);
+                gameOver.SetSound(sound);
+                gameOver.Initialize(game);
+                gameOver.LoadResources();
+                Log.Instance.Write("GameOver scene init completed");
+            }
+            catch (Exception ex)
+            {
+                Log.Instance.Write("ERROR: Controller.Start() : " + Environment.NewLine + "\t\t" + ex.ToString());
+            }
+            
             currentScene = menu;
 
             Render();

@@ -46,19 +46,24 @@ namespace SharpPixel.Engine
 
         public MainForm()
         {
+            Log.Instance.Write("Main form create started");
             InitializeComponent();
             dt = mainTimer.Interval / 1000d;
 
+            Log.Instance.Write("Sound resources loading started");
             sound.LoadResources();
+            Log.Instance.Write("Sound resources loading completed");
 
             controller.SetSound(sound);
             controller.SetRenderSurface(this.renderSurface);
+            Log.Instance.Write("Controller.Start()");
             controller.Start();
+            Log.Instance.Write("Controller.Start() completed");
         }
 
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
             Utility.KeyDown[e.KeyCode] = false;
-        }
+        }        
     }
 }

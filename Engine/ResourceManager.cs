@@ -44,6 +44,10 @@ namespace SharpPixel.Engine
             }
             catch (ArgumentException aex)
             {
+                Log.Instance.Write(string.Format("Не удалось загрузить ресурс `{0}`, используя путь `{1}`. {2}",
+                        resourceName,
+                        GetResourcePath(resourceName), aex));
+
                 throw new Exception(
                     string.Format("Не удалось загрузить ресурс `{0}`, используя путь `{1}`",
                         resourceName,
@@ -59,7 +63,7 @@ namespace SharpPixel.Engine
         /// <returns>Path to audio resource</returns>
         public static string GetAudioResourcePath(string resourceName)
         {
-            return string.Format("sounds/{0}.ogg", resourceName);
+            return string.Format("sounds/{0}.mp3", resourceName);
         }
     }
 }

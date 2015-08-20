@@ -11,9 +11,19 @@ namespace SharpPixel.Engine
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();            
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            try
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new MainForm());
+                Log.Instance.Write(" ---- Exit");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                if (!ex.Message.Contains("Не удалось что-то записать в лог"))
+                    Log.Instance.Write("UNHANDLED ERROR: " + ex.ToString());
+            }
         }
     }
 }

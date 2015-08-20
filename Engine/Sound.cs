@@ -12,18 +12,29 @@ namespace SharpPixel.Engine
         /// <summary>
         /// Internal storage for audio objects
         /// </summary>
-        private Dictionary<Sounds, Audio> sounds = new Dictionary<Sounds, Audio>();
+        private Dictionary<Sounds, Audio> sounds;
+
+        private bool inited = false;
 
         /// <summary>
         /// Loads audio resources into memory
         /// </summary>
         public void LoadResources()
         {
-            foreach (Sounds en in Enum.GetValues(typeof(Sounds)))
+            try
             {
-                var sound = new Audio(ResourceManager.GetAudioResourcePath(en.ToString()), false);
-                sound.Ending += (o, e) => { sound.Stop(); sound.CurrentPosition = 0; };
-                sounds.Add(en, sound);
+                sounds = new Dictionary<Sounds, Audio>();
+                foreach (Sounds en in Enum.GetValues(typeof(Sounds)))
+                {
+                    var sound = new Audio(ResourceManager.GetAudioResourcePath(en.ToString()), false);                                     
+//                    sound.Ending += (o, e) => { sound.Stop(); sound.CurrentPosition = 0; };
+                    sounds.Add(en, sound);
+                }
+                inited = true;
+            }
+            catch (Exception ex)
+            {
+                Log.Instance.Write("ERROR: Sound load failed" + Environment.NewLine + "\t\t" + ex.ToString());
             }
         }
 
@@ -33,8 +44,11 @@ namespace SharpPixel.Engine
         /// <param name="sound">Sound to play</param>
         public void Play(Sounds sound)
         {
-            sounds[sound].Stop();
-            sounds[sound].Play();
+            if (inited)
+            {
+                sounds[sound].CurrentPosition = 0;
+                sounds[sound].Play();
+            }
         }
     }
 }
